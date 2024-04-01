@@ -13,6 +13,7 @@ while line:
 
     words.pop(7)
     words.pop(7)
+
     if (not firstLine):
         if words[len(words)-1] and words[len(words)-2] and words[len(words)-3]:
             x = ((int(words[len(words)-1]) / 3) + (int(words[len(words)-2]) / 4) +
@@ -31,6 +32,12 @@ while line:
         words.pop(len(words) - 1)
 
         words.append(x)
+    else:
+        words.pop(len(words) - 1)
+        words.pop(len(words) - 1)
+        words.pop(len(words) - 1)
+
+        words.append("result")
 
     line = ' '.join(words) + '\n'
 
