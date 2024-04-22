@@ -64,6 +64,8 @@ def process_file(input_file, output_file):
         for line in f:
             words = line.split(';')
             words = transform_data(words)
+            words.pop(7)  # Remove 'Mjob'
+            words.pop(7)  # Remove 'Fjob'
 
             if not first_line:
                 result = calculate_result(words)
