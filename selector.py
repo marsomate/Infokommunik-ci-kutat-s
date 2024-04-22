@@ -1,83 +1,86 @@
-f = open("student.csv", "r")
-g = open("selected.csv", "w")
-
-line = f.readline()
-firstLine = True
-
-while line:
-
-    words = line.split(';')
-
+def transform_data(words):
+    """Transforms the data according to specified rules."""
     for i in range(len(words)):
         words[i] = words[i].strip('"')
 
-        if (words[i] == 'F'):
+        # Mapping categorical values to numerical values
+        if words[i] == 'F':
             words[i] = "0"
-        elif (words[i] == 'M'):
+        elif words[i] == 'M':
             words[i] = "1"
-        elif (words[i] == 'U'):
+        elif words[i] == 'U':
             words[i] = "0"
-        elif (words[i] == 'R'):
+        elif words[i] == 'R':
             words[i] = "1"
-        elif (words[i] == "LE3"):
+        elif words[i] == "LE3":
             words[i] = "0"
-        elif (words[i] == "GT3"):
+        elif words[i] == "GT3":
             words[i] = "1"
-        elif (words[i] == 'A'):
+        elif words[i] == 'A':
             words[i] = "0"
-        elif (words[i] == 'T'):
+        elif words[i] == 'T':
             words[i] = "1"
-        elif (words[i] == "course"):
+        elif words[i] == "course":
             words[i] = "0"
-        elif (words[i] == "other"):
+        elif words[i] == "other":
             words[i] = "1"
-        elif (words[i] == "home"):
+        elif words[i] == "home":
             words[i] = "2"
-        elif (words[i] == "reputation"):
+        elif words[i] == "reputation":
             words[i] = "3"
-        elif (words[i] == "mother"):
+        elif words[i] == "mother":
             words[i] = "0"
-        elif (words[i] == "father"):
+        elif words[i] == "father":
             words[i] = "1"
-        elif (words[i] == "no"):
+        elif words[i] == "no":
             words[i] = "0"
-        elif (words[i] == "yes"):
+        elif words[i] == "yes":
             words[i] = "1"
 
-    words.pop(7)
-    words.pop(7)
+    return words
 
-    if (not firstLine):
-        if words[len(words)-1] and words[len(words)-2] and words[len(words)-3]:
-            x = ((int(words[len(words)-1]) / 3) + (int(words[len(words)-2]) / 4) +
-                 (int(words[len(words)-3]) / 4)) / 3
-            if x > 5:
-                x = 5
-            if x < 1:
-                x = 1
 
-            x = str(int(round(x, 0)))
-        else:
-            x = ''  # Vagy valamilyen más alapértelmezett érték, ha az adat nem érvényes
+def calculate_result(words):
+    """Calculates the result based on the given scores."""
+    if words[-1] and words[-2] and words[-3]:
+        average_score = (
+            (int(words[-1]) / 3) + (int(words[-2]) / 4) + (int(words[-3]) / 4)) / 3
 
-        words.pop(len(words) - 1)
-        words.pop(len(words) - 1)
-        words.pop(len(words) - 1)
+        # Ensuring the result falls within the valid range
+        if average_score > 5:
+            average_score = 5
+        elif average_score < 1:
+            average_score = 1
 
-        words.append(x)
+        return str(int(round(average_score, 0)))
     else:
-        words.pop(len(words) - 1)
-        words.pop(len(words) - 1)
-        words.pop(len(words) - 1)
+        return ''  # Or any other default value if the data is invalid
 
-        words.append("Result")
 
-    line = ','.join(words) + '\n'
+def process_file(input_file, output_file):
+    """Processes the input file and writes the transformed data to the output file."""
+    with open(input_file, "r") as f, open(output_file, "w") as g:
+        first_line = True
+        for line in f:
+            words = line.split(';')
+            words = transform_data(words)
 
-    g.write(line)
+            if not first_line:
+                result = calculate_result(words)
+                words.pop(-1)
+                words.pop(-1)
+                words.pop(-1)
+                words.append(result)
+            else:
+                words.pop(-1)
+                words.pop(-1)
+                words.pop(-1)
+                words.append("Result")
+                first_line = False
 
-    line = f.readline()
-    firstLine = False
+            line = ','.join(words) + '\n'
+            g.write(line)
 
-f.close()
-g.close()
+
+# Function calls
+process_file("student.csv", "selected.csv")
