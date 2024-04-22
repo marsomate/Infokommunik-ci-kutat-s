@@ -11,6 +11,39 @@ while line:
     for i in range(len(words)):
         words[i] = words[i].strip('"')
 
+        if (words[i] == 'F'):
+            words[i] = "0"
+        elif (words[i] == 'M'):
+            words[i] = "1"
+        elif (words[i] == 'U'):
+            words[i] = "0"
+        elif (words[i] == 'R'):
+            words[i] = "1"
+        elif (words[i] == "LE3"):
+            words[i] = "0"
+        elif (words[i] == "GT3"):
+            words[i] = "1"
+        elif (words[i] == 'A'):
+            words[i] = "0"
+        elif (words[i] == 'T'):
+            words[i] = "1"
+        elif (words[i] == "course"):
+            words[i] = "0"
+        elif (words[i] == "other"):
+            words[i] = "1"
+        elif (words[i] == "home"):
+            words[i] = "2"
+        elif (words[i] == "reputation"):
+            words[i] = "3"
+        elif (words[i] == "mother"):
+            words[i] = "0"
+        elif (words[i] == "father"):
+            words[i] = "1"
+        elif (words[i] == "no"):
+            words[i] = "0"
+        elif (words[i] == "yes"):
+            words[i] = "1"
+
     words.pop(7)
     words.pop(7)
 
@@ -37,9 +70,9 @@ while line:
         words.pop(len(words) - 1)
         words.pop(len(words) - 1)
 
-        words.append("result")
+        words.append("Result")
 
-    line = ' '.join(words) + '\n'
+    line = ','.join(words) + '\n'
 
     g.write(line)
 
